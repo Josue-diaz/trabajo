@@ -68,8 +68,8 @@ class Welcome extends CI_Controller {
 
 		$datos = array(
 			'nombre' => strtoupper(trim($this->input->post('nombre'))),
-			'apaterno' => strtoupper(trim($this->input->post('apellidop'))),
-			'amaterno' => strtoupper(trim($this->input->post('apellidom'))),
+			'apaterno' => strtoupper(trim($this->input->post('apaterno'))),
+			'amaterno' => strtoupper(trim($this->input->post('amaterno'))),
 			'correo' => trim($this->input->post('email')),
 			'contrasenia' => md5(trim($this->input->post('pwd'))));
 
