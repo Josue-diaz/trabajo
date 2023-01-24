@@ -1,3 +1,3 @@
 <?php
-echo 'hola ya entraste en mi'
+echo 'Entraste ala vista de usuario'
 ?>

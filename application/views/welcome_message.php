@@ -9,7 +9,7 @@
     <?php }?>
 
     <h2>Registro de Participante </h2>
-    <form action="<?php echo base_url('Welcome/registrar') ?>" method="post">
+    <form action="<?php echo base_url('registro/registrar') ?>" method="post">
         <div class="form-group">
 
             <label for="nombre">Nombre:</label>

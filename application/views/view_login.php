@@ -43,7 +43,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <a href="<?php echo base_url('Welcome') ?>"><span class="glyphicon glyphicon-user">
+                    <a href="<?php echo base_url('registro') ?>"><span class="glyphicon glyphicon-user">
                             Registrarse</span></a>
                 </div>
             </div>

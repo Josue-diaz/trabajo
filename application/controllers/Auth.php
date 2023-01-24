@@ -43,7 +43,7 @@ class Auth extends CI_Controller{
                     $this->session->set_userdata($datos);
                     $this->session->set_userdata($params);
                     $this->session->set_flashdata('success', 'Bienvenido'.' &nbsp'.$params['nombre']);
-                    redirect('welcome');
+                    redirect('registro');
                     
                 }else{
                     $datos = array(
