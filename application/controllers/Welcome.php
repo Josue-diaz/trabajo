@@ -7,34 +7,52 @@ class Welcome extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		if(!$this->session->has_userdata('id')){
+            redirect('Auth');
+        }
 		$this->load->model('Welcome_model'); //aqui cargamos nuetro modelo
 		// include 
+		
 	}
 	
 
 	public function index()
 	{
+		$this->load->view('view_header');
 		$this->load->view('welcome_message');
+		$this->load->view('view_footer');
 		
+	}
+	
+	public function indexuser(){
+		$this->load->view('view_header');
+		$this->load->view('view_usuario');
+		$this->load->view('view_footer');
 	}
 
 	public function listar()
 	{
-		#print_r($this->Welcome_model->readData());
 		$data['preregistros'] = $this->Welcome_model->readData();
+		$this->load->view('view_header');
+		#print_r($this->Welcome_model->readData());
 		$this->load->view('view_registro', $data);
+		$this->load->view('view_footer');
 	}
 
 	public function registrar(){
-		#print_r($_POST);
-		#var_dump($_POST);
-
-		$datos = array(
+		if($this->input->post('rol')=='Administrador'){
+			$roles=1;
+		}else{
+			$roles=2;
+		}
+			$datos = array(
 			'nombre' => strtoupper(trim($this->input->post('nombre'))),
 			'apaterno' => strtoupper(trim($this->input->post('apaterno'))),
 			'amaterno' => strtoupper(trim($this->input->post('amaterno'))),
 			'correo' => trim($this->input->post('email')),
-			'contrasenia' => md5(trim($this->input->post('pwd'))));
+			'contrasenia' => password_hash(trim($this->input->post('pwd')), PASSWORD_DEFAULT),
+			'rol' => intval ($roles));
+			
 			
 			if ($this->Welcome_model->validaremail($datos['correo'])){
 				echo 'el correo ya existe';
@@ -48,12 +66,13 @@ class Welcome extends CI_Controller {
 	}
 }
 
-
 	public function actualizar($id)
 	{
 		$data['preregistro'] = $this->Welcome_model->fetch($id);
 	#	var_dump($data);exit();
+		$this->load->view('view_header');
 		$this->load->view('view_editar', $data);
+		$this->load->view('view_footer');
 	}
 	
 	public function eliminar($id){
@@ -65,15 +84,21 @@ class Welcome extends CI_Controller {
 
 	public function update()
 	{
-
-		$datos = array(
+		if($this->input->post('rol')=='Administrador'){
+			$roles=1;
+		}else{
+			$roles=2;
+		}
+			$datos = array(
 			'nombre' => strtoupper(trim($this->input->post('nombre'))),
 			'apaterno' => strtoupper(trim($this->input->post('apaterno'))),
 			'amaterno' => strtoupper(trim($this->input->post('amaterno'))),
 			'correo' => trim($this->input->post('email')),
-			'contrasenia' => md5(trim($this->input->post('pwd'))));
+			'contrasenia' => trim($this->input->post('pwd')),
+			'rol' => intval ($roles));
+	
 
-			$id = $this->input->post('id_preregistro');
+		$id = $this->input->post('id_preregistro');
 
 		$result = $this->Welcome_model->update($id, $datos);
 		if ($result == TRUE) {
@@ -82,5 +107,4 @@ class Welcome extends CI_Controller {
 			echo 'Contacta a soporte';
 		}
 	}
-	
 }
