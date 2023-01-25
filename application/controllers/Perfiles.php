@@ -38,8 +38,24 @@ class Perfiles extends CI_Controller
     public function listar()
 	{
 		
-		$response =  $this->Perfiles_model->readData();
-        echo json_encode($response);
-	}
+		//$response =  $this->Perfiles_model->readData();
+        //echo json_encode($response);
+        $objLista =  $this->Perfiles_model->readData();
+        $data = array();
+
+        foreach ($objLista as $key) {
+            $eliminar = '<div class="btn-group"> <a href="#" class="btn btn-danger "><span class="glyphicon glyphicon-trash"></span></a>';
+            $actualizar = '<a href="#" class="btn btn-warning "><span class="glyphicon glyphicon-edit"></span></a> </div>';
+            $row = array();
+            $row[] = $key['id_perfil'];
+            $row[] = $key['nombre_perfil'];
+            $row[] = $eliminar . $actualizar;
+            $data[] = $row;
+        }
+        $result  = array('data' => $data);
+        echo json_encode($result);
 
 }
+}
+
+?>

@@ -45,57 +45,54 @@
 
 <script type='text/javascript'>
 $(document).ready(function() {
-            //alert('Hola mundo')
-            //console.log('Hola mindo desde una consola')
+    //alert('Hola mundo')
+    //console.log('Hola mindo desde una consola')
 
 
-            $('#save').click(function(e) {
-                // evitar lo que pasaría por default
-                e.preventDefault();
+    $('#save').click(function(e) {
+        // evitar lo que pasaría por default
+        e.preventDefault();
 
-                //alert($("form").serialize());
+        //alert($("form").serialize());
 
-                $.ajax({
-                    url: "<?php echo base_url('Perfiles/registrar') ?>",
-                    method: 'POST',
-                    data: $("form").serialize(),
-                    cache: false,
-                    //contentType: false,
-                    //processData: false,
-                    dataType: 'json',
-                    success: function(respuesta) {
-                        // var data = JSON.parse(respuesta);
-                        $('#myModal').modal('hide');
-                        $("form")[0].reset();
-                        console.log(respuesta);
+        $.ajax({
+            url: "<?php echo base_url('Perfiles/registrar') ?>",
+            method: 'POST',
+            data: $("form").serialize(),
+            cache: false,
+            //contentType: false,
+            //processData: false,
+            dataType: 'json',
+            success: function(respuesta) {
+                // var data = JSON.parse(respuesta);
+                $('#myModal').modal('hide');
+                $("form")[0].reset();
+                console.log(respuesta);
 
-                    }
-                })
+            }
+        })
 
-            });
+    });
 
-            $('#myTable').DataTable({
-                    ajax: {
-                        url: '<?php echo base_url('Perfiles/listar') ?>',
-                        dataSrc: '',
-                    },
-                    columns: [{
-                            data: 'id_perfil'
-                        },
-                        
-                        {
-                            data: 'nombre_perfil'
-                    
-                        },
-                        {
-                            render: function (data, type){
-                                return "<button class='btn btn-info'><li class='glyphicon glyphicon-pencil'></li> editar</button> <button class='btn btn-danger'><li class='glyphicon glyphicon-trash'></li> eliminar</button>"
-                            }
-                            //defaultContent: "<button class='btn btn-info'><li class='glyphicon glyphicon-pencil'></li> editar</button> <button class='btn btn-danger'><li class='glyphicon glyphicon-trash'></li> eliminar</button>"
-                            
-                           },
-                        ],
-                    });
-                    
-            });
+    $('#myTable').DataTable({
+            /* "processing": true,
+            "serverSide": true,
+            "ordering": false,
+            "responsive": true,
+            dom: 'Bfrtip',
+            buttons: [
+                'excelHtml5'
+            ], */
+            "ajax": {
+                url: '<?php echo base_url('Perfiles/listar') ?>',
+                type: 'POST'
+            },
+            /* "columnDefs": [{
+                "targets": [0],
+                "orderable": false,
+            }, ], */
+        });
+
+    });
+    
 </script>
