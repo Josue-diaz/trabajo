@@ -6,8 +6,8 @@
         } 
 
         public function index(){
-            $this->email->to('je863048@gmail.com');
             $this->email->from('je863048@gmail.com','Trabajo de Residencia');
+            $this->email->to('je863048@gmail.com');
             $this->email->subject('Prueba de correo');
             $this->email->message('Prueba envio de correo.');
             if($this->email->send()){
