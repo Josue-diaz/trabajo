@@ -1,20 +1,16 @@
 <?php
 
-class Practicas extends CI_Controller
-{
+class practicas extends CI_Controller{
 
-    function __construct()
-    {
+    function __construct(){
         parent::__construct();
-        //$this->load->library('form_validation');
+        //$this->load->model('');
     }
 
-
-    public function viewEjemplo()
-    {
+    public function viewEjemplo(){
         $this->load->view('view_practica');
-    }
 
+    }
     public function registrar()
     {
         /* 
@@ -37,8 +33,8 @@ class Practicas extends CI_Controller
                 'rules' => 'required|trim|max_length[30]|regex_match[/^[a-zñáéíóúüA-ZÑÁÉÍÓÚÜ ,.]*$/u]'
             ),
             array(
-                'field' => 'email', 'label' => 'Dirección de correo',
-                'rules' => 'required|trim|valid_email|is_unique[preregistro.correo]'
+                'field' => 'email', 'label' => 'Email',
+                'rules' => 'required|trim|valid_email|is_unique[preregistro.email]'
             ),
             array(
                 'field' => 'pwd', 'label' => 'Contraseña',
@@ -51,7 +47,7 @@ class Practicas extends CI_Controller
         );
         //$this->form_validation->set_rules('nombre', 'nombre', 'required|trim');
         $this->form_validation->set_rules($config);
-        $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+        $this->form_validation->set_error_delimiters('<p class="text-danger" id="message">', '</p>');
         if ($this->form_validation->run() == FALSE) {
 
             $messageData['success'] = false;
@@ -63,23 +59,12 @@ class Practicas extends CI_Controller
                 'nombre' => trim($this->input->post('nombre')),
                 'apaterno' => $this->input->post('apaterno'),
                 'amaterno' => $this->input->post('amaterno'),
-                'correo' => $this->input->post('email'),
-                'contrasenia' => $this->input->post('pwd')
+                'email' => $this->input->post('email'),
+                'password' => $this->input->post('pwd')
             );
-            exit();
-            $result = $this->Welcome_model->insert($datos);
-            if ($result == TRUE) {
-                # code...
-                #echo 'Registro Exitoso';
-                //redirect('Welcome/listar');
-                $messageData["success"] = TRUE;
-                $messageData["message"] = '<div class="alert alert-success alert-dimissible"></div>';
-            } else {
-                $messageData["success"] = TRUE;
-                $messageData["message"] = '<div class="alert alert-warning alert-dimissible"></div>';
-            }
+                $messageData['success'] = true;
+                $messageData['messages'] = "<div class=\"alert alert-success\"><strong>Registro exitoso!</strong></div>";
         }
-
         echo json_encode($messageData);
     }
 }

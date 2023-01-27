@@ -50,7 +50,9 @@
 
             <div class="row">
                 <div class="col-sm-6">
-                    <h2>Validando datos</h2>
+                <span id="msg-data">
+                    </span>
+                    <br>
                     <form id="frmRegistro">
                         <?php echo validation_errors(); ?>
                         <div class="form-group">
@@ -105,23 +107,33 @@
         //var suma = numero1 + numero2;
         //alert('el valor de la suma es '+suma)
 
-        $('#frmRegistro').on("submit", function(e) {
-            e.preventDefault();
-            let dataString = $('#frmRegistro').serialize();
-            // alert(dataString)
-            $.ajax({
-                url: "<?php echo base_url('Practicas/registrar') ?>",
-                method: 'POST',
-                data: dataString,
-                success: function(response) {
-                    console.log(response)
+        $(document).ready(function() {
+    $('#frmRegistro').on("submit", function(e) {
+        e.preventDefault();
+        let dataString = $('#frmRegistro').serialize();
+        // alert(dataString)
+        $.ajax({
+            url: "<?php echo base_url('Calcu/registrar') ?>",
+            method: 'POST',
+            data: dataString,
+            success: function(response) {
+                $(".text-danger").remove();
+                document.getElementById('frmRegistro').reset();
+                var data = JSON.parse(response);
+                if (data.success == true) {
+                    $('#msg-data').html(data.messages);
+                    limpiarForm();
+                } else {
 
-                    
+                    $.each(data.messages, function(key, value) {
+                        let element = $("#" + key);
+                        let div = element.closest(".form-group");
+                        div.after(value);
+                    });
+
                 }
-            })
+            }
         });
-
-
     });
 
     function operaciones() {
@@ -161,6 +173,15 @@
 
 
 
+    }
+
+    function limpiarFormAdd() {
+        setTimeout(function () {
+            $("#msg-data").hide("slow");
+        },2000);
+        
+        $("#frmRegistro")[0].reset();
+        
     }
 
     function limpiar() {
