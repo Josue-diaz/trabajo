@@ -1,13 +1,20 @@
 <div class="container">
-    <h2>Tabla Usuarios</h2>
+    <h2>Catalogo de Perfiles</h2>
+    <p>aqui podemos agregar un texto</p>
     <!-- Trigger the modal with a button -->
-    <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">Usuarios</button>
+    <button type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#myModal">Registrar</button>
     <table class="table table-hover" id="myTable">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Acciones</th>
+                <center>
+                    <th>#</th>
+                </center>
+                <center>
+                    <th>Nombre</th>
+                </center>
+                <center>
+                    <th>Acciones</th>
+                </center>
             </tr>
         </thead>
         <tbody>
@@ -31,6 +38,8 @@
                         <label for="perfil">Nombre del Perfil:</label>
                         <input type="text" class="form-control" id="perfil" name="perfil">
                     </div>
+                    <input type="hidden" name="id_perfil" id="id_perfil">
+                    <input type="hidden" name="action" id="action" value="nuevo">
                     <button type="button" class="btn btn-success" id="save"> Guardar</button>
                 </form>
             </div>
@@ -67,7 +76,7 @@ $(document).ready(function() {
                 // var data = JSON.parse(respuesta);
                 $('#myModal').modal('hide');
                 $("form")[0].reset();
-                console.log(respuesta);
+                alert(respuesta)
 
             }
         })
@@ -75,24 +84,87 @@ $(document).ready(function() {
     });
 
     $('#myTable').DataTable({
-            /* "processing": true,
-            "serverSide": true,
-            "ordering": false,
-            "responsive": true,
-            dom: 'Bfrtip',
-            buttons: [
-                'excelHtml5'
-            ], */
-            "ajax": {
-                url: '<?php echo base_url('Perfiles/listar') ?>',
-                type: 'POST'
-            },
-            /* "columnDefs": [{
-                "targets": [0],
-                "orderable": false,
-            }, ], */
-        });
-
+        /* "processing": true,
+        "serverSide": true,
+        "ordering": false,
+        "responsive": true,
+        dom: 'Bfrtip',
+        buttons: [
+            'excelHtml5'
+        ], */
+        "ajax": {
+            url: '<?php echo base_url('Perfiles/listar') ?>',
+            type: 'POST'
+        },
+        /* "columnDefs": [{
+            "targets": [0],
+            "orderable": false,
+        }, ], */
     });
-    
+
+});
+
+function updateData(valor) {
+    //alert(valor)
+    $.ajax({
+        url: "<?php echo base_url('Perfiles/actualizar') ?>",
+        method: 'POST',
+        data: {
+            idback: valor
+        },
+        dataType: 'json',
+        cache: false,
+        success: function(respuesta) {
+            $('#myModal').modal('show');
+            $('#perfil').val(respuesta.nombre_perfil);
+            $('#id_perfil').val(respuesta.id_perfil);
+            $('#action').val('editar');
+        }
+    })
+}
+
+$(document).on('click', '.update', function() {
+
+    var idfront = $(this).attr("id");
+    //alert(id)
+    $.ajax({
+        url: "<?php echo base_url('Perfiles/actualizar') ?>",
+        method: 'POST',
+        data: {
+            idback: idfront
+        },
+        cache: false,
+        dataType: 'json',
+        success: function(respuesta) {
+            //comprobamos la respuesta del back
+            //console.log(respuesta)
+            //en ocasiones es necesario parsear la respuesta 
+            //var data = JSON.parse(respuesta);
+            $('#myModal').modal('show');
+            $('#perfil').val(respuesta.nombre_perfil);
+            $('#id_perfil').val(respuesta.id_perfil);
+            $('#action').val('editar');
+            window.location.reload()
+
+        }
+    })
+});
+$(document).on('click', '.delete', function() {
+
+    var idfront = $(this).attr("id");
+    //alert(id)
+    $.ajax({
+        url: "<?php echo base_url('perfiles/eliminar') ?>",
+        method: 'POST',
+        data: {
+            idback: idfront
+        },
+        dataType: 'json',
+        success: function(respuesta) {
+            alert(respuesta)
+            window.location.reload()
+           
+        }
+    })
+});
 </script>
